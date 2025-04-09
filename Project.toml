@@ -1,0 +1,4 @@
+name = "LandscapeMetrics"
+uuid = "25862bd7-db54-4647-9101-56547424702b"
+authors = ["Timothée Poisot <timothee.poisot@umontreal.ca>"]
+version = "0.0.1"
