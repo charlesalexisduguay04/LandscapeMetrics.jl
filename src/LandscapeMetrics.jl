@@ -9,6 +9,9 @@ export Landscape
 export background
 export exteriorbackground, interiorbackground
 
+# Some demonstration data
+include("demo.jl")
+
 # Functions to identify the patches
 include("patches.jl")
 export Moore, VonNeumann
