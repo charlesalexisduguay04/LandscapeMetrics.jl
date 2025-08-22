@@ -10,6 +10,7 @@ Base.@kwdef struct Landscape{T<:Integer}
 end
 
 Base.eltype(::Landscape{T}) where {T} = T
+Base.size(l::Landscape) = size(l.grid)
 
 interiorbackground(l::Landscape) = isequal(l.nodata).(l.grid)
 exteriorbackground(l::Landscape) = l.grid .< zero(eltype(l))

@@ -58,7 +58,6 @@ function patches(l::Landscape; stencil=Moore)
     patch_count = filter(x -> !iszero(x.first), collect(countmap(patch_id)))
     sort!(patch_count, by=x -> x.second, rev=true)
 
-    @info patch_count
     return_id = zeros(eltype(patch_id), size(patch_id))
 
     for (i, k) in enumerate(patch_count)
