@@ -2,6 +2,9 @@ module LandscapeMetrics
 
 using TestItems
 
-greet() = print("Hello World!")
+include("types.jl")
+export AbstractLandscape
+export RegularLandscape, IrregularLandscape
+export grid, area
 
 end # module LandscapeMetrics
