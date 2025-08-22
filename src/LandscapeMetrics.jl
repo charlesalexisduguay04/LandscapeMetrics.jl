@@ -3,11 +3,13 @@ module LandscapeMetrics
 using TestItems
 using StatsBase
 
+# Patches, generic utilies, and overloads
 include("types.jl")
 export Landscape
 export background
 export exteriorbackground, interiorbackground
 
+# Functions to identify the patches
 include("patches.jl")
 export Moore, VonNeumann
 export patches
