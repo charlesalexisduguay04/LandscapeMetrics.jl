@@ -4,7 +4,9 @@ authors = ["Timothée Poisot <timothee.poisot@umontreal.ca>"]
 version = "0.0.1"
 
 [deps]
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 TestItems = "1c621080-faea-4a02-84b6-bbd5e436b8fe"
 
 [compat]
+StatsBase = "0.34.6"
 TestItems = "1"
