@@ -1,48 +1,17 @@
 """
-    AbstractLandscape
+    Landscape
 
-This is an abstract class for all landscapes that we will work on -- the overwhelming majority of methods should dispatch on this, and we can build interfaces as required for the more specific types
+The landscape is defined by a grid of values, and has a specific value for no data. When the value is nodata, the patch is considered empty. When the value is negative, the patch is consider a border.
 """
-abstract type AbstractLandscape end
-
-"""
-    RegularLandscape
-
-This type represents a landscape in which the cells have the same area -- this is the default type of landscape
-"""
-struct RegularLandscape{T,S<:Real} <: AbstractLandscape
+struct Landscape{T <: Integer}
     grid::Matrix{T}
-    area::S
+    nodata::T = 99
+    area::AbstractFloat = 1.0
 end
 
-"""
-    IrregularLandscape
+Base.eltype(::Landscape{T}) where {T} = T
 
-This type represents a landscape in which the cells have different surfaces -- this is notably useful when the grid comes from a layer represented as WGS84
-"""
-struct IrregularLandscape{T,S<:Real} <: AbstractLandscape
-    grid::Matrix{T}
-    area::Matrix{S}
-end
-
-"""
-    grid(::AbstractLandscape)
-
-Returns the grid of values for a given landscape
-"""
-grid(M <: AbstractLandscape) = M.grid
-
-"""
-    area(::IrregularLandscape)
-
-Returns the matrix of cell surface area for an irregularly sized landscape
-"""
-area(M::IrregularLandscape) = M.area
-
-"""
-    area(::RegularLandscape)
-
-Returns the area of each cell (as a matrix) for a regularly sized landscape
-"""
-area(M::RegularLandscape) = fill(M.area, size(grid(M)))
+interiorbackground(l::Landscape) = isequal(l.nodata).(l.grid)
+exteriorbackground(l::Landscape) = l.grid .< zero(eltype(l))
+background(l::Landscape) = interiorbackground(l).|exteriorbackground(l)
 
