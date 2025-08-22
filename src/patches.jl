@@ -35,7 +35,7 @@ function patches(l::Landscape; stencil=Moore)
                 inpatch = filter(n -> l.grid[n] == target, neighbors)
 
                 # If there are neighbors here...
-                if ~isempty(inpatch)
+                if !isempty(inpatch)
 
                     # We can now look at whether all the values are the same
                     current_patch_id = patch_id[inpatch]
