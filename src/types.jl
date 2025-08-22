@@ -1,3 +1,8 @@
+"""
+    AbstractLandscape
+
+This is an abstract class for all landscapes that we will work on -- the overwhelming majority of methods should disaptch on this, and we can build interfaces as required for the more specific types
+"""
 abstract type AbstractLandscape end
 
 """
@@ -25,7 +30,7 @@ end
 
 Returns the grid of values for a given landscape
 """
-grid(M<:AbstractLandscape) = M.grid
+grid(M <: AbstractLandscape) = M.grid
 
 """
     area(::IrregularLandscape)
