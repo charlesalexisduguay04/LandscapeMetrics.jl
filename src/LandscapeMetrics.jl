@@ -6,6 +6,7 @@ using StatsBase
 include("types.jl")
 export Landscape
 export background
+export exteriorbackground, interiorbackground
 
 include("patches.jl")
 export Moore, VonNeumann
