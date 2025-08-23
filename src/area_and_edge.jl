@@ -6,6 +6,10 @@ Other keyword arguments are passed to `patches`.
 function perimeter(l::Landscape, patch; kwargs...)
     p = patches(l; kwargs...)
 
+    # The perimeter calculation assumes that the interactions with the barrier are part of
+    # the perimeter, so we can set all the background cells to 0
+    p[background(l)] .= 0
+
     # The perimeter is simply the number of cells that have a different-valued neighbor for
     # a given patch, but keep in mind that we only look at this for the Von Neumann neighborhood.
     to_check = filter(i -> i in CartesianIndices(p), findall(isequal(patch), p) .+ VonNeumann)
