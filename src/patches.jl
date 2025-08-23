@@ -6,9 +6,7 @@ function patches(l::Landscape; stencil=Moore)
     # bit of value propagation
     patch_id = collect(reshape(eachindex(l.grid), size(l.grid)))
 
-    # We do not care about the background values
-    # TODO: This is not absolutel y true, we care about the values when they are negative --
-    # this needs to be fixed
+    # We do not care about the background values when assigning the patches
     patch_id[background(l)] .= 0
 
     # We will have a flag to check that we have updated at least one of the values during

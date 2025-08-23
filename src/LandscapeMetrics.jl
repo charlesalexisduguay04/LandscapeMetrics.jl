@@ -19,6 +19,6 @@ export patches
 
 # Area and edge
 include("area_and_edge.jl")
-export totalarea
+export totalarea, perimeter
 
 end # module LandscapeMetrics

@@ -11,6 +11,8 @@ end
 
 Base.eltype(::Landscape{T}) where {T} = T
 Base.size(l::Landscape) = size(l.grid)
+Base.size(l::Landscape, args...) = size(l.grid, args...)
+Base.ndims(l::Landscape) = ndims(l.grid)
 
 """
 interiorbackground(l::Landscape)
