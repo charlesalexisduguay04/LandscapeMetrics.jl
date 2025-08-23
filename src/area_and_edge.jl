@@ -3,8 +3,10 @@
 
 Other keyword arguments are passed to `patches`.
 """
-function perimeter(l::Landscape, patch; kwargs...)
-    p = patches(l; kwargs...)
+function perimeter(l::Landscape, patch)
+
+    # We get the patches
+    p = patches(l)
 
     # The perimeter calculation assumes that the interactions with the barrier are part of
     # the perimeter, so we can set all the background cells to 0
@@ -56,7 +58,7 @@ end
         1 1 1 2 2 2;
         2 2 2 2 2 2
     ]
-    L = Landscape(grid=A)
+    L = Landscape(A)
     @test perimeter(L, 2) == 10
 end
 
@@ -79,6 +81,6 @@ end
         -99 2 2 2 2 -99;
         -99 -99 -99 -99 -99 -99
     ]
-    L = Landscape(grid=A)
+    L = Landscape(A)
     @test totalarea(L) == 12
 end

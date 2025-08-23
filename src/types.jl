@@ -3,16 +3,28 @@ Landscape
 
 The landscape is defined by a grid of values, and has a specific value for no data. When the value is nodata, the patch is considered empty. When the value is negative, the patch is consider a border.
 """
-Base.@kwdef struct Landscape{T<:Integer}
+struct Landscape{T<:Integer}
     grid::Matrix{T}
-    nodata::T = 99
-    area::AbstractFloat = 1.0
+    patches::Matrix{<:Integer}
+    nodata::T
+    area::AbstractFloat
 end
 
 Base.eltype(::Landscape{T}) where {T} = T
 Base.size(l::Landscape) = size(l.grid)
 Base.size(l::Landscape, args...) = size(l.grid, args...)
 Base.ndims(l::Landscape) = ndims(l.grid)
+
+function Landscape(m::Matrix{T}; nodata=typemax(T), area=1.0, kwargs...) where {T<:Integer}
+    patches = fill(0, size(m))
+    L = Landscape(
+        m,
+        patches,
+        nodata,
+        area)
+    patches!(L; kwargs...)
+    return L
+end
 
 """
 interiorbackground(l::Landscape)
@@ -60,7 +72,7 @@ background(l::Landscape) = interiorbackground(l) .| exteriorbackground(l)
     A[rand(findall(exterior))] = -_fill_value
 
     # We store this into an actual landscape
-    L = Landscape(grid=A, nodata=_bg_value)
+    L = Landscape(A; nodata=_bg_value)
 
     # These are the three tests we care about
     @test interiorbackground(L) == interior

@@ -15,7 +15,7 @@ include("demo.jl")
 # Functions to identify the patches
 include("patches.jl")
 export Moore, VonNeumann
-export patches
+export patches!, patches
 
 # Area and edge
 include("area_and_edge.jl")
