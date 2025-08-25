@@ -30,5 +30,6 @@ export area
 include("shape/paratio.jl")
 export paratio, perimeterarearatio
 export shapeindex
+export fractaldimensionindex
 
 end # module LandscapeMetrics
