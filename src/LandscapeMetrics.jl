@@ -13,12 +13,15 @@ export exteriorbackground, interiorbackground
 include("demo.jl")
 
 # Functions to identify the patches
-include("patches.jl")
+include("utilities/patches.jl")
 export Moore, VonNeumann
 export patches!, patches
 
 # Area and edge
-include("area_and_edge.jl")
-export totalarea, perimeter
+include("area_and_edge/perimeter.jl")
+export perimeter
+
+include("area_and_edge/area.jl")
+export totalarea
 
 end # module LandscapeMetrics
