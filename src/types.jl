@@ -52,6 +52,25 @@ Returns the background for the landscape, which is composed of cells that are ei
 """
 background(l::Landscape) = interiorbackground(l) .| exteriorbackground(l)
 
+"""
+    foreground(l::Landscape)
+
+Returns the position of the cells that are not a background
+"""
+foreground(l::Landscape) = .!background(l)
+
+@testitem "We can correctly identify the foreground" begin
+    _fill_value = 1
+    _bg_value = 2
+    A = [
+        1 1 1;
+        1 1 2;
+        2 1 2
+    ]
+    L = Landscape(A; nodata=_bg_value)
+    @test foreground(L) == [true true true; true true false; false true false]
+end
+
 @testitem "We can correctly identify the background" begin
 
     # We create a mock landscape with a single patch value
