@@ -25,6 +25,7 @@ export perimeter
 include("area_and_edge/area.jl")
 export totalarea
 export area
+export classarea
 
 # Shape
 include("shape/paratio.jl")

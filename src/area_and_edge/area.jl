@@ -5,7 +5,6 @@ Area of a specific patch in the landscape.
 """
 area(l::Landscape, p::Integer) = l.area * count((patches(l) .== p) .& foreground(l))
 
-
 @testitem "We can measure the area of a patch" begin
     A = [
         1 1 1 2 2;
@@ -64,4 +63,25 @@ end
     patches!(L)
     a = [area(L, p) for p in unique(patches(L))]
     @test sum(a) < totalarea(L)
+end
+
+"""
+    classarea(l::Landscape{T}, c::T) where {T<:Integer}
+
+Returns the total class area for a given class `c`. Background values are ignored.
+"""
+function classarea(l::Landscape{T}, c::T) where {T<:Integer}
+    @assert c in unique(l.grid)
+    area_coverage = count(isequal(c).(l.grid) .& foreground(l))
+    return l.area * area_coverage
+end
+
+@testitem "We can get the total area for a class" begin
+    A = [
+        1 1 1 2 2 2;
+        1 2 2 2 2 2
+    ]
+    L = Landscape(A)
+    @test classarea(L, 1) == count(A .== 1)
+    @test classarea(L, 2) == count(A .== 2)
 end
