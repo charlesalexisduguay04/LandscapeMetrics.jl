@@ -61,3 +61,27 @@ end
     L = Landscape(A)
     @test perimeter(L, 2) == 10
 end
+
+@testitem "We can measure the perimeter of a patch with internal background" begin
+    A = [
+        1 1 1;
+        1 2 1;
+        1 1 1
+    ]
+    L = Landscape(A; nodata=2)
+    patches!(L)
+    @test perimeter(L, 1) == 16
+end
+
+@testitem "We can measure the perimeter of a patch with exterior background" begin
+    A = [
+        -2 -2 -2 -2 -2;
+        -2 1 1 1 -2;
+        -2 1 2 1 -2;
+        -2 1 1 1 -2;
+        -2 -2 -2 -2 -2
+    ]
+    L = Landscape(A; nodata=2)
+    patches!(L)
+    @test perimeter(L, 1) == 16
+end
