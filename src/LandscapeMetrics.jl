@@ -29,5 +29,6 @@ export area
 # Shape
 include("shape/paratio.jl")
 export paratio, perimeterarearatio
+export shapeindex
 
 end # module LandscapeMetrics
