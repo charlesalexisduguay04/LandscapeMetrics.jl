@@ -26,4 +26,8 @@ include("area_and_edge/area.jl")
 export totalarea
 export area
 
+# Shape
+include("shape/paratio.jl")
+export paratio, perimeterarearatio
+
 end # module LandscapeMetrics
