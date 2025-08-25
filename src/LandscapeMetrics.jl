@@ -7,6 +7,7 @@ using StatsBase
 include("types.jl")
 export Landscape
 export background
+export foreground
 export exteriorbackground, interiorbackground
 
 # Some demonstration data
@@ -23,5 +24,6 @@ export perimeter
 
 include("area_and_edge/area.jl")
 export totalarea
+export area
 
 end # module LandscapeMetrics
