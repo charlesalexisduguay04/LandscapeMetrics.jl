@@ -110,10 +110,10 @@ patches(l::Landscape) = l.patches
     # This is what it should look like with the VonNeumann neighborhood
     patches!(l; stencil=VonNeumann)
     M = [
-        1 1 1 1 1 5 5 5 0 0;
-        1 1 1 6 6 6 0 0 0 0;
-        1 1 2 2 2 2 4 4 3 3;
-        1 2 2 2 2 2 4 4 3 3
+        1 1 1 1 1 6 6 6 0 0;
+        1 1 1 5 5 5 0 0 0 0;
+        1 1 2 2 2 2 3 3 4 4;
+        1 2 2 2 2 2 3 3 4 4
     ]
     @test all(M .== patches(l))
 end
