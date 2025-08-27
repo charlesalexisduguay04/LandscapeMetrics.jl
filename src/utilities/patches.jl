@@ -41,10 +41,17 @@ function patches!(l::Landscape; stencil=Moore)
                     current_patch_id = patch_id[inpatch]
 
 
-                    # We will now merge the patche
+                    # We will now merge the patches identifiers
                     if length(unique(current_patch_id)) > 1
+
+                        # We are making an update, so the algorithm has not converged yet
                         has_updated = true
-                        patch_id[inpatch] .= minimum(current_patch_id)
+
+                        # To save time, we will identify all values in the patch grid that
+                        # are of the same value as one of the neighbors -- this will help
+                        # with updating large fractions of the landscape at once
+                        positions_to_replace = findall(i -> i in unique(patch_id[inpatch]), patch_id)
+                        patch_id[positions_to_replace] .= minimum(current_patch_id)
                     end
                 end
             end
