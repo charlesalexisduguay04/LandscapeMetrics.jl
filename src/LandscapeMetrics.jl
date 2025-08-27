@@ -1,7 +1,9 @@
 module LandscapeMetrics
 
 using TestItems
+using Test
 using StatsBase
+import DelimitedFiles
 
 # Patches, generic utilies, and overloads
 include("types.jl")
@@ -12,6 +14,7 @@ export exteriorbackground, interiorbackground
 
 # Some demonstration data
 include("demo.jl")
+include("utilities/data.jl") # Montérégie
 
 # Functions to identify the patches
 include("utilities/patches.jl")
