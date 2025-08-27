@@ -108,3 +108,6 @@ end
     @test exteriorbackground(L) == exterior
     @test background(L) == interior .| exterior
 end
+
+area(l::Landscape) = l.area
+side(l::Landscape) = sqrt(area(l))

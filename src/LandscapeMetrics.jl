@@ -11,6 +11,7 @@ export Landscape
 export background
 export foreground
 export exteriorbackground, interiorbackground
+export area, side
 
 # Some demonstration data
 include("demo.jl")
