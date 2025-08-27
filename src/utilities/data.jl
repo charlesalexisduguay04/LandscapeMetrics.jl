@@ -11,10 +11,11 @@ function data(; nodata=12, exterior=0, kwargs...)
     datapath = joinpath((dirname ∘ dirname)(pathof(LandscapeMetrics)), "data", "grid.dat")
     grid = DelimitedFiles.readdlm(datapath, '\t', Int8)
     if exterior > 0
+        # Remove rows
         grid[1:exterior, :] .*= (-1)
-        grid[:, 1:exterior] .*= (-1)
-        grid[(end-exterior):exterior, :] .*= (-1)
-        grid[:, (end-exterior):exterior] .*= (-1)
+        grid[(end-exterior+1):end, :] .*= (-1)
+        grid[(exterior+1):(end-exterior), 1:exterior] .*= (-1)
+        grid[(exterior+1):(end-exterior), (end-exterior+1):end] .*= (-1)
     end
     nd_value = isnothing(nodata) ? typemax(eltype(grid)) : convert(eltype(grid), nodata)
     L = Landscape(grid; nodata=nd_value, area=500.0 * 500.0, kwargs...)
@@ -28,6 +29,8 @@ end
 end
 
 @testitem "We can load the demo data with an exterior background" begin
-    L = LandscapeMetrics.data(; nodata=nothing, exterior=5)
-    @test false
+    ext_size = 5
+    L = LandscapeMetrics.data(; nodata=nothing, exterior=ext_size)
+    expected_exterior_background = 2 * sum(ext_size .* size(L)) - 4 * (ext_size^2)
+    @test sum(background(L)) == expected_exterior_background
 end
