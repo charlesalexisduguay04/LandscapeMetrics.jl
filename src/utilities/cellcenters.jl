@@ -16,7 +16,7 @@ function cellcenters(l::Landscape)
     offset = fill([0.5 .* (size(l) .+ 1)...], size(l))
 
     # We now scale this by the size of the cells
-    return tuple.((centers .- offset) .* s)
+    return [tuple(x...) for x in (centers .- offset) .* s]
 
 end
 
