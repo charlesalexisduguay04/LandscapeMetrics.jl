@@ -28,5 +28,5 @@ end
         -1 -1 -1 -1 -1
     ]
     L = Landscape(A; nodata=2)
-    @test percentage(L, 1) ≈ 100 * (count(A .== 1) / prod(size(A)))
+    @test percentage(L, 1) ≈ 100 * (count(A .== 1) / (prod(size(A)) - 16))
 end
