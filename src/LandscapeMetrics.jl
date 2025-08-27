@@ -33,6 +33,9 @@ export classarea
 include("area_and_edge/percentage.jl")
 export percentage
 
+include("area_and_edge/largestpatch.jl")
+export largestpatchindex
+
 # Shape
 include("shape/paratio.jl")
 export paratio, perimeterarearatio
