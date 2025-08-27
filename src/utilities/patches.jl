@@ -4,7 +4,7 @@ const Moore = collect(CartesianIndices((-1:1, -1:1)))
 function patches!(l::Landscape; stencil=Moore)
     # We start by giving each pixel in the landcape its own value, and then we do a little
     # bit of value propagation
-    patch_id = collect(reshape(eachindex(l.grid), size(l.grid)))
+    patch_id = collect(reshape(eachindex(l), size(l)))
 
     # We do not care about the background values when assigning the patches
     patch_id[background(l)] .= 0
@@ -29,10 +29,10 @@ function patches!(l::Landscape; stencil=Moore)
                 neighbors = filter(pos -> pos in CartesianIndices(patch_id), i .+ stencil)
 
                 # We pick the value of the patch in the landscape
-                target = l.grid[i]
+                target = l[i]
 
                 # We need to get the neighbors that have the same value as the target patch
-                inpatch = filter(n -> l.grid[n] == target, neighbors)
+                inpatch = filter(n -> l[n] == target, neighbors)
 
                 # If there are neighbors here...
                 if !isempty(inpatch)
