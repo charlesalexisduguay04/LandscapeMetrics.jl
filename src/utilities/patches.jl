@@ -2,72 +2,89 @@ const VonNeumann = CartesianIndex.([(-1, 0), (0, 0), (0, 1), (0, -1), (1, 0)])
 const Moore = collect(CartesianIndices((-1:1, -1:1)))
 
 function patches!(l::Landscape; stencil=Moore)
-    # We start by giving each pixel in the landcape its own value, and then we do a little
-    # bit of value propagation
-    patch_id = collect(reshape(eachindex(l), size(l)))
 
-    # We do not care about the background values when assigning the patches
-    patch_id[background(l)] .= 0
+    # We start by emptying the allocation of patches, and assigning each value to its own
+    # patch
+    for i in LinearIndices(l.patches)
+        l.patches[i] = i
+    end
+    @assert allunique(l.patches)
 
-    # We will have a flag to check that we have updated at least one of the values during
-    # this round of updates
-    has_updated = true
+    # And we create a grid to keep track of the visited patches - it is initially all false,
+    # which means that we need to visit all the patches
+    visited = zeros(Bool, size(l.patches))
 
-    # Now we can loop
-    while (has_updated)
+    # We do not assign the background to patches, so we can already rule these out. We give
+    # them a value of 0, and we also set their visit value to true so we do not update them
+    # further
+    for bg in findall(background(l))
+        visited[bg] = true
+        l.patches[bg] = 0
+    end
 
-        # We will assume that there is no update yet
-        has_updated = false
+    # Now we will visit the patches in turn, until we have visited all the patches -- this
+    # will happen when all the values in the visited matrix are true
+    while !all(visited)
+        start_update_at = findfirst(!, visited)
 
-        # Now we loop
-        for i in CartesianIndices(patch_id)
-
-            # But only if the patch is not in the background
-            if !iszero(patch_id[i])
-
-                # Get the neighbors of the patch
-                neighbors = filter(pos -> pos in CartesianIndices(patch_id), i .+ stencil)
-
-                # We pick the value of the patch in the landscape
-                target = l[i]
-
-                # We need to get the neighbors that have the same value as the target patch
-                inpatch = filter(n -> l[n] == target, neighbors)
-
-                # If there are neighbors here...
-                if !isempty(inpatch)
-
-                    # We can now look at whether all the values are the same
-                    current_patch_id = patch_id[inpatch]
-
-
-                    # We will now merge the patches identifiers
-                    if length(unique(current_patch_id)) > 1
-
-                        # We are making an update, so the algorithm has not converged yet
-                        has_updated = true
-
-                        # To save time, we will identify all values in the patch grid that
-                        # are of the same value as one of the neighbors -- this will help
-                        # with updating large fractions of the landscape at once
-                        positions_to_replace = findall(i -> i in unique(patch_id[inpatch]), patch_id)
-                        patch_id[positions_to_replace] .= minimum(current_patch_id)
-                    end
-                end
-            end
-        end
-
+        # This will work through all the possible patches connected to the starting update
+        # point by the stencil
+        _propagate_labels!(l, visited, start_update_at, stencil)
     end
 
     # Now we update the values so that the largest patch has ID of 1
-    patch_count = filter(x -> !iszero(x.first), collect(countmap(patch_id)))
+
+    # This line ensures that the patch index are larger than what we have encountered, so we
+    # cannot over-write values
+    l.patches[l.patches.!=0] .+= prod(size(l.patches)) + 1
+
+    # We start by counting the values for all patches and ranking them
+    patch_count = filter(x -> !iszero(x.first), collect(countmap(l.patches)))
     sort!(patch_count, by=x -> x.second, rev=true)
 
-    for (i, k) in enumerate(patch_count)
-        l.patches[findall(patch_id .== k.first)] .= i
+    for i in eachindex(patch_count)
+        l.patches[findall(l.patches .== patch_count[i].first)] .= i
     end
 
     return l
+
+end
+
+function _propagate_labels!(landscape, visits, position, neighborhood)
+    # Identify all neighbors, which are given by the position to which we add the stencil.
+    # The positions that are outside the grid (the Julia matrix) are removed
+    neighbors = filter(pos -> pos in CartesianIndices(visits), position .+ neighborhood)
+
+    # We get the patch id of the current patch. This is the value we will propagate to the
+    # rest of the connected cells
+    current_patch = landscape.patches[position]
+
+    # We can mark the fact that this position has been visited, and we have given it a patch
+    # value
+    visits[position] = true
+
+    # The patches to visit have the same class value
+    n_with_same_class = filter(pos -> landscape[pos] == landscape[position], neighbors)
+
+    # But we also only want to visit the neighbors that have not been visited yet
+    n_to_visit = filter(pos -> !visits[pos], n_with_same_class)
+
+    if isempty(n_to_visit)
+        # We quit if there are no neighbors left to work on
+        return nothing
+    else
+        # Otherwise, we will loop through the various neighbors to update
+        for visit in n_to_visit
+            # We set the value of the neighbor to visit to the value of the patch we are
+            # currently on
+            landscape.patches[visit] = current_patch
+
+            # Then we go and update the neighbours of this patch
+            _propagate_labels!(landscape, visits, visit, neighborhood)
+        end
+    end
+
+    return nothing
 end
 
 patches(l::Landscape) = l.patches
