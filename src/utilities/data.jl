@@ -8,16 +8,16 @@ If exterior is set to any value larger than 0, this many cells on the border of 
 The values are returned as Int8, so the nodata value must be given as an Int8 as well.
 """
 function data(; nodata=12, exterior=0, kwargs...)
-    datapath = joinpath((dirname∘dirname)(pathof(LandscapeMetrics)), "data", "grid.dat")
+    datapath = joinpath((dirname ∘ dirname)(pathof(LandscapeMetrics)), "data", "grid.dat")
     grid = DelimitedFiles.readdlm(datapath, '\t', Int8)
-    nd_value = isnothing(nodata) ? typemax(eltype(grid)) : convert(eltype(grid), nodata)
     if exterior > 0
-        Landscape[1:exterior, :] .*= (-1)
-        Landscape[:, 1:exterior] .*= (-1)
-        Landscape[(end-exterior):exterior, :] .*= (-1)
-        Landscape[:, (end-exterior):exterior] .*= (-1)
+        grid[1:exterior, :] .*= (-1)
+        grid[:, 1:exterior] .*= (-1)
+        grid[(end-exterior):exterior, :] .*= (-1)
+        grid[:, (end-exterior):exterior] .*= (-1)
     end
-    L = Landscape(grid; nodata=nd_value, area=500. * 500., kwargs...)
+    nd_value = isnothing(nodata) ? typemax(eltype(grid)) : convert(eltype(grid), nodata)
+    L = Landscape(grid; nodata=nd_value, area=500.0 * 500.0, kwargs...)
     return L
 end
 
