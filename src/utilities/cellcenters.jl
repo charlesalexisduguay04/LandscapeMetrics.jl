@@ -16,6 +16,13 @@ function cellcenters(l::Landscape)
     offset = fill([0.5 .* (size(l) .+ 1)...], size(l))
 
     # We now scale this by the size of the cells
-    return (centers .- offset) .* s
+    return tuple.((centers .- offset) .* s)
 
+end
+
+@testitem "We can get the center of cells" begin
+    A = [1 2 3; 4 5 6; 7 8 9]
+    L = Landscape(A; area=4.0)
+    @test cellcenters(L)[2, 2] == (0.0, 0.0)
+    @test cellcenters(L)[1, 1] == (-2.0, -2.0)
 end
