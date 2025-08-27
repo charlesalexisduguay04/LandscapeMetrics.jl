@@ -1,5 +1,5 @@
 """
-Landscape
+    Landscape
 
 The landscape is defined by a grid of values, and has a specific value for no data. When the value is nodata, the patch is considered empty. When the value is negative, the patch is consider a border.
 """
@@ -13,7 +13,9 @@ end
 Base.eltype(::Landscape{T}) where {T} = T
 Base.size(l::Landscape) = size(l.grid)
 Base.size(l::Landscape, args...) = size(l.grid, args...)
+Base.eachindex(l::Landscape) = eachindex(l.grid)
 Base.ndims(l::Landscape) = ndims(l.grid)
+Base.getindex(l::Landscape, i...) = Base.getindex(l.grid, i...)
 
 function Landscape(m::Matrix{T}; nodata=typemax(T), area=1.0, kwargs...) where {T<:Integer}
     patches = fill(0, size(m))
@@ -26,8 +28,16 @@ function Landscape(m::Matrix{T}; nodata=typemax(T), area=1.0, kwargs...) where {
     return L
 end
 
+@testitem "We can use getindex to get the value in the grid" begin
+    A = [1 2; 3 4]
+    L = Landscape(A)
+    for i in eachindex(L)
+        @test L[i] == A[i]
+    end
+end
+
 """
-interiorbackground(l::Landscape)
+    interiorbackground(l::Landscape)
 
 Returns a bitmatrix that indicates whether a cell of the landscape is part of the interior background. The interior background is positive and has the `nodata` value.
 """
@@ -36,7 +46,7 @@ function interiorbackground(l::Landscape)
 end
 
 """
-exteriorbackground(l.::Landscape)
+    exteriorbackground(l.::Landscape)
 
 Returns a bitmatrix that indicates whether a cell of the landscape is part of the exterior background. The interior background is negative, and can have either the `nodata` value or the value associated to a patch in the landscape.
 """
@@ -46,7 +56,7 @@ end
 
 
 """
-background(l::Landscape)
+    background(l::Landscape)
 
 Returns the background for the landscape, which is composed of cells that are either in the interior of exterior bacground.
 """
