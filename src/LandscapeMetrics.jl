@@ -45,6 +45,8 @@ export largestpatchindex
 include("shape/paratio.jl")
 export paratio, perimeterarearatio
 export shapeindex
+
+include("shape/fractal.jl")
 export fractaldimensionindex
 
 end # module LandscapeMetrics
