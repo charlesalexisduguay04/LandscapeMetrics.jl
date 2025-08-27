@@ -14,6 +14,7 @@ function data(; nodata=12, exterior=0, kwargs...)
         # Remove rows
         grid[1:exterior, :] .*= (-1)
         grid[(end-exterior+1):end, :] .*= (-1)
+        # Remove columns, note that we have already switched some of the rows!
         grid[(exterior+1):(end-exterior), 1:exterior] .*= (-1)
         grid[(exterior+1):(end-exterior), (end-exterior+1):end] .*= (-1)
     end
