@@ -30,6 +30,9 @@ export totalarea
 export area
 export classarea
 
+include("area_and_edge/percentage.jl")
+export percentage
+
 # Shape
 include("shape/paratio.jl")
 export paratio, perimeterarearatio

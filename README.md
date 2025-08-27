@@ -14,6 +14,10 @@ Tested: there are unit tests for the method implementation
 | Area and egde | Patch | Radius of gyration |  |  |
 | Area and egde | Class | Total class area | ✅  | ✅  |
 | Area and egde | Class | Percentage of landscape |  |  |
+| Area and egde | Class | Total class area | ✅  | ✅  |
+| Area and egde | Class | Percentage of landscape |  ✅ | ✅  |
+| Area and egde | Class | Total class area | ✅  | ✅  |
+| Area and egde | Class | Percentage of landscape |  |  |
 | Area and egde | Class | Total edge |  |  |
 | Area and egde | Class | Edge Density|  |  |
 | Area and egde | Landscape | Total area| ✅  | ✅  |
