@@ -116,4 +116,3 @@ patches(l::Landscape) = l.patches
     ]
     @test all(M .== patches(l))
 end
-end
