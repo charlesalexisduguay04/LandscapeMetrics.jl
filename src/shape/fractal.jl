@@ -48,6 +48,10 @@ function _fractal_dimension(aij, pij)
 end
 
 """
+
+    fractaldimension(l::Landscape, c::Integer)
+
+Returns the fractal dimension for a given class in the landscape. This is measured as the `fractaldimensionindex` across all patches from a single class.
 """
 function fractaldimension(l::Landscape{T}, c::T) where {T<:Integer}
 
@@ -64,6 +68,11 @@ function fractaldimension(l::Landscape{T}, c::T) where {T<:Integer}
     return _fractal_dimension(aij, pij)
 end
 
+"""
+    fractaldimension(l::Landscape)
+
+Retursn the fractal dimension for the landscape. This is measured as the `fractaldimensionindex` across all patches (except the background).
+"""
 function fractaldimension(l::Landscape)
 
     # We take all patches in the landscape, with the exception of the patches that are made
