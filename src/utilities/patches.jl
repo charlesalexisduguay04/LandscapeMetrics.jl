@@ -47,7 +47,6 @@ function patches!(l::Landscape; stencil=Moore)
     end
 
     return l
-
 end
 
 function _propagate_labels!(landscape, visits, position, neighborhood)
@@ -116,4 +115,5 @@ patches(l::Landscape) = l.patches
         1 2 2 2 2 2 3 3 4 4
     ]
     @test all(M .== patches(l))
+end
 end

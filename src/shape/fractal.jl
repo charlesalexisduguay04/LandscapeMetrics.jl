@@ -39,6 +39,14 @@ end
     @test fractaldimensionindex(L, 1) < 1
 end
 
+function _fractal_dimension(aij, pij)
+    @assert length(aij) == length(pij)
+    n = length(aij)
+    denom = (n * sum(log.(pij .* pij))) - sum(log.(pij))^2.0
+    num_partial = n * sum(log.(pij) .* log.(aij)) - sum(log.(pij)) * sum(log.(aij))
+    return (2.0 / num_partial) / denom
+end
+
 """
 """
 function fractaldimension(l::Landscape{T}, c::T) where {T<:Integer}
@@ -47,17 +55,11 @@ function fractaldimension(l::Landscape{T}, c::T) where {T<:Integer}
 
     # We identify the patches that correspond to class c
     patches_id = unique(patches(l)[findall(isequal(c), values(l))])
-    n = length(patches_id)
 
     # We now get their areas and perimeters
     aij = [area(l, p) for p in patches_id]
     pij = [perimeter(l, p) for p in patches_id]
 
     # We can now calculate the index
-    # TODO: This needs to be moved to a function, as it will also be shared by the landscape
-    # version
-    denom = (n * sum(log.(pij .* pij))) - sum(log.(pij))^2.0
-    num_partial = n * sum(log.(pij) .* log.(aij)) - sum(log.(pij)) * sum(log.(aij))
-
-    return (2.0 / num_partial) / denom
+    return _fractal_dimension(aij, pij)
 end
