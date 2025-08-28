@@ -63,3 +63,17 @@ function fractaldimension(l::Landscape{T}, c::T) where {T<:Integer}
     # We can now calculate the index
     return _fractal_dimension(aij, pij)
 end
+
+function fractaldimension(l::Landscape)
+
+    # We take all patches in the landscape, with the exception of the patches that are made
+    # of background values
+    patches_id = filter(!iszero, unique(patches(l)))
+
+    # We now get their areas and perimeters
+    aij = [area(l, p) for p in patches_id]
+    pij = [perimeter(l, p) for p in patches_id]
+
+    # We can now calculate the index
+    return _fractal_dimension(aij, pij)
+end
