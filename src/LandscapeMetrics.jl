@@ -26,6 +26,9 @@ export patches!, patches
 include("utilities/cellcenters.jl")
 export cellcenters
 
+# Function to get the core areas
+include("utilities/core.jl")
+
 # Area and edge
 include("area_and_edge/perimeter.jl")
 export perimeter
