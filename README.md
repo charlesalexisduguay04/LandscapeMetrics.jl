@@ -35,6 +35,7 @@ Tested: there are unit tests for the method implementation
 | Corea area | Patch | Number of core areas|   |   |
 | Corea area | Patch | Core area index|   |   |
 | Corea area | Patch | Toal core area |   |   |
+| Corea area | Patch | Toal core area |   |   |
 | Corea area | Patch | Core area percentage of landscape|   |   |
 | Corea area | Landscape | Total core area|   |   |
 | Corea area | Landscape | Number of disjunct core areas|   |   |
