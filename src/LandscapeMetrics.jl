@@ -44,6 +44,9 @@ export percentage
 include("area_and_edge/largestpatch.jl")
 export largestpatchindex
 
+include("area_and_edge/radiusofgyration.jl")
+export radiusofgyration
+
 # Shape
 include("shape/paratio.jl")
 export paratio, perimeterarearatio

@@ -3,6 +3,7 @@
 
 Other keyword arguments are passed to `patches`.
 """
+
 function perimeter(l::Landscape, patch)
 
     # We get the patches
