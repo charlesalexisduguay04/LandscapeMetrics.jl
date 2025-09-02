@@ -1,4 +1,3 @@
-using StatsBase
 
 """
     radiusofgyration(l::Landscape)
@@ -10,7 +9,7 @@ Returns the mean distance between each cell in the patch and the patch centroid.
 function radiusofgyration(l::Landscape, patch)
 
     # We get the patches
-    p = patches(1)
+    p = patches(l)
 
     # We get the coordinates of the patch
     patch_coordinates = findall(isequal(patch), p)
@@ -31,7 +30,6 @@ function radiusofgyration(l::Landscape, patch)
     return mean(distances)
 
 end
-
 
 
 
@@ -58,7 +56,7 @@ end
          1 1 1
     ]
     L = Landscape(A)
-    @test radiusofgyration(L, 1) == 0.666666666
+    @test radiusofgyration(L, 1) == 2/3
 end 
 
 
