@@ -14,18 +14,16 @@ function radiusofgyration(l::Landscape, patch)
     # We get the coordinates of the patch
     patch_coordinates = findall(isequal(patch), p)
 
-    # Extract row and column indices
-    rows = [coord[1] for coord in patch_coordinates]
-    cols = [coord[2] for coord in patch_coordinates]
+    # We get the center position of each cells
+    centers = cellcenters(l)
+    patch_centers = [centers[idx] for idx in patch_coordinates]
 
-    # Calculate center position
-    centroid_row = mean(rows)
-    centroid_col = mean(cols)
+    # Find the centroid of the patch
+    centroid = reduce(+, patch_centers) / length(patch_centers)
 
- 
     # Compute distances from each cell to centroid
-        distances = [hypot(r - centroid_row, c - centroid_col) for (r, c) in zip(rows, cols)]
-     
+    distances = [hypot(c[1] - centroid[1], c[2] - centroid[2]) for c in patch_centers]
+
     # Return mean distance
     return mean(distances)
 
@@ -60,11 +58,52 @@ end
 end 
 
 
+@testitem "We can measure the radius of gyration for a multi-cell patch" begin
+L = Landscape([
+        1 1 1 1 1 2 2 2 2 4 4 4 4 4;
+        1 1 1 3 3 2 2 2 2 4 4 1 1 1;
+        1 1 1 3 3 3 3 4 4 4 4 4 4 4;
+        1 1 1 3 3 3 3 4 9 9 9 9 4 4;
+        9 9 9 3 3 3 3 4 9 9 9 9 4 4;
+        9 9 9 3 3 3 3 4 4 4 4 4 4 4;
+        9 9 9 3 3 9 9 9 4 4 4 4 4 4;
+        4 4 4 4 4 9 9 9 2 2 2 2 2 2;
+        4 4 4 4 4 4 4 4 2 2 2 2 2 2
+    ], nodata=9
+)
+
+P = patches(L)
+
+for patch_num in unique(P)
+    rog = radiusofgyration(L, patch_num)
+    @info rog
+end
+
+end
 
 
 
 
 
+L = Landscape([
+        1 1 1 1 1 2 2 2 2 4 4 4 4 4;
+        1 1 1 3 3 2 2 2 2 4 4 1 1 1;
+        1 1 1 3 3 3 3 4 4 4 4 4 4 4;
+        1 1 1 3 3 3 3 4 9 9 9 9 4 4;
+        9 9 9 3 3 3 3 4 9 9 9 9 4 4;
+        9 9 9 3 3 3 3 4 4 4 4 4 4 4;
+        9 9 9 3 3 9 9 9 4 4 4 4 4 4;
+        4 4 4 4 4 9 9 9 2 2 2 2 2 2;
+        4 4 4 4 4 4 4 4 2 2 2 2 2 2
+    ], nodata=9
+)
+
+P = patches(L)
+
+for patch_num in unique(P)
+    rog = radiusofgyration(L, patch_num)
+    @info rog
+end
 
 
 

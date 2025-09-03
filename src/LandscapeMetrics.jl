@@ -47,6 +47,9 @@ export largestpatchindex
 include("area_and_edge/radiusofgyration.jl")
 export radiusofgyration
 
+include("area_and_edge/totaledge.jl")
+export totaledge
+
 # Shape
 include("shape/paratio.jl")
 export paratio, perimeterarearatio
@@ -56,3 +59,4 @@ include("shape/fractal.jl")
 export fractaldimensionindex
 
 end # module LandscapeMetrics
+
