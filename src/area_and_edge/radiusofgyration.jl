@@ -19,7 +19,7 @@ function radiusofgyration(l::Landscape, patch)
     patch_centers = [centers[idx] for idx in patch_coordinates]
 
     # Find the centroid of the patch
-    centroid = reduce(+, patch_centers) / length(patch_centers)
+    centroid = reduce(.+, patch_centers)./ length(patch_centers)
 
     # Compute distances from each cell to centroid
     distances = [hypot(c[1] - centroid[1], c[2] - centroid[2]) for c in patch_centers]

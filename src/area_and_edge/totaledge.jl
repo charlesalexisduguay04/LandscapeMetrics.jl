@@ -1,10 +1,10 @@
 """
-    totaledges(l::Landscape)
+    totaledge(l::Landscape)
 
 Total length of edge in the landscape.
 """
 
-function total_edge(l::Landscape; patch)
+function totaledge(l::Landscape)
  
     grid = l.grid
     nrows, ncols = size(grid)
@@ -21,7 +21,7 @@ function total_edge(l::Landscape; patch)
             total_edge_length += 1.0
         end
     end
-
+    
     return total_edge_length * sqrt(l.area)
 end
 
@@ -33,5 +33,14 @@ end
         2 2 2 2 2 2
     ]
     L = Landscape(A)
-    @test total_edge(L) == 5
+    @test totaledge(L) == 5
+end
+
+@testitem "We can measure the total edge of a landscape" begin
+    A = [
+        1 3;
+        3 3
+    ]
+    L = Landscape(A)
+    @test totaledge(L) == 2
 end
