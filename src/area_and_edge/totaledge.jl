@@ -44,3 +44,13 @@ end
     L = Landscape(A)
     @test totaledge(L) == 2
 end
+
+@testitem "We can measure the total edge of a landscape" begin
+    A = [
+        1 1 1 2 2 2;
+        1 1 1 2 2 2;
+        2 2 2 1 2 2
+    ]
+    L = Landscape(A)
+    @test totaledge(L) == 8
+end
